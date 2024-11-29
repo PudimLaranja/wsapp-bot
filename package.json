@@ -1,16 +1,21 @@
 {
   "name": "wsapp-bot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "a",
   "main": "main.js",
   "scripts": {
     "start": "node ."
   },
   "keywords": [],
-  "author": "",
+  "author": "pudim",
   "license": "ISC",
   "dependencies": {
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.26.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PudimLaranja/wsapp-bot.git"
   }
 }
