@@ -10,10 +10,10 @@
   "author": "pudim",
   "license": "ISC",
   "dependencies": {
+    "jimp": "^1.6.0",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.26.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/PudimLaranja/wsapp-bot.git"

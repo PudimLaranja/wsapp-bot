@@ -1,10 +1,12 @@
+
+
 class TextAnim {
   constructor(
     message,
     name,
     duration,
-    frame_time = 100,
     loop = false,
+    frame_time = 100,
     callbacks = {}
   ) {
     this.message = message;
@@ -77,22 +79,28 @@ class TextAnim {
   async runTextAnimLoop() {
     while (this.isPlaying && this.currentFrameIndex < this.frames.length) {
       const currentFrame = this.frames[this.currentFrameIndex];
-
+  
       // Adjust duration accounting for any elapsed time
       let frameDuration = this.isPaused
         ? currentFrame.duration - this.elapsedTime
         : currentFrame.duration;
-
+  
       const frameContent = currentFrame.getContent(
         Date.now(),
         this.getFrameContext()
       );
-      this.message.edit(frameContent);
+  
+      try {
+        await this.message.edit(frameContent); // Await the async edit
+      } catch (error) {
+        console.error("Error updating message:", error);
+      }
+  
       this.elapsedTime = 0; // Reset elapsed time for the current frame
-
+  
       if (this.callbacks.onFrameChange)
         this.callbacks.onFrameChange(currentFrame);
-
+  
       const startTime = Date.now();
       while (Date.now() - startTime < frameDuration) {
         if (!this.isPlaying) return; // Stop if stop() is called
@@ -102,13 +110,14 @@ class TextAnim {
         }
         await this.sleep(10); // Small delay to reduce CPU load
       }
-
+  
       this.currentFrameIndex++;
       if (this.currentFrameIndex >= this.frames.length) {
         break; // End of frames, check for loop in play()
       }
     }
   }
+  
 
   pause() {
     if (this.isPlaying) {
@@ -182,18 +191,5 @@ function f(ascii, duration = null) {
   return { ascii, duration };
 }
 
-// Example usage
-const msg = {
-  edit: (content) => console.log(content), // Simulated message editing
-};
 
-var anim = new TextAnim(msg, "blinking", "10f", 100, true);
-
-anim.build({
-  "0%": f("(-_-)"), // 0% of the total time
-  "25%": f("(o_o)o"), // 25% of the total time
-  "50%": f("(O_O)╭╮"), // 50% of the total time
-  "75%": f("(O`_´O)╭∩╮"), // 75% of the total time
-});
-
-anim.play();
+module.exports = {TextAnim,Frame,f};
